@@ -1,0 +1,19 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace VetCare.Models;
+
+public class AppUser
+{
+    public int Id { get; set; }
+    [Required, StringLength(120)]
+    public string Nome { get; set; } = "";
+    [Required, EmailAddress, StringLength(180)]
+    public string Email { get; set; } = "";
+    [Required, StringLength(500)]
+    public string PasswordHash { get; set; } = "";
+    [Required, StringLength(30)]
+    public string Perfil { get; set; } = "Veterinario";
+    [StringLength(500)]
+    public string? FotoPerfil { get; set; }
+    public DateTime CriadoEm { get; set; } = DateTime.UtcNow;
+}

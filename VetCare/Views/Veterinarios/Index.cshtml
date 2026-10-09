@@ -1,0 +1,5 @@
+@model IEnumerable<Veterinario>
+@{ ViewData["Title"] = "Veterinários"; }
+<div class="page-heading"><div><div class="eyebrow">EQUIPE</div><h1 class="page-title">Veterinários</h1><p class="text-muted">Profissionais vinculados à clínica.</p></div><a class="btn btn-primary" asp-action="Create">+ Novo veterinário</a></div>
+<div class="row g-3">@foreach(var v in Model){<div class="col-md-6 col-xl-4"><div class="content-card d-flex gap-3 align-items-center">@if(!string.IsNullOrEmpty(v.FotoPerfil)){<img class="profile-photo" src="@v.FotoPerfil" alt=""/>}else{<div class="profile-photo avatar-placeholder">V</div>}<div><h2 class="section-title mb-1">@v.Nome</h2><div class="text-muted small">@v.CRmv</div><div class="small">@v.Email</div><div class="small">@v.Telefone</div></div></div></div>}</div>
+@if(!Model.Any()){<div class="empty-state">Nenhum veterinário cadastrado.</div>}

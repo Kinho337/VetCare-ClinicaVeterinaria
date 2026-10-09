@@ -1,0 +1,21 @@
+@{
+ ViewData["Title"] = "Painel";
+ var proximos = ViewBag.Proximos as IEnumerable<Agendamento> ?? [];
+}
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+ <div><div class="eyebrow">VISÃO GERAL</div><h1 class="page-title">Olá, @User.Identity?.Name</h1><p class="text-muted mb-0">Resumo da rotina da clínica veterinária.</p></div>
+ <a class="btn btn-primary" asp-controller="Agendamentos" asp-action="Create">+ Novo agendamento</a>
+</div>
+<div class="row g-3 mb-4">
+ <div class="col-6 col-xl-3"><div class="stat-card"><div class="stat-icon">T</div><div class="stat-label">Tutores cadastrados</div><div class="stat-number">@ViewBag.Tutores</div><a asp-controller="Tutores" asp-action="Index">Ver tutores →</a></div></div>
+ <div class="col-6 col-xl-3"><div class="stat-card"><div class="stat-icon">P</div><div class="stat-label">Animais cadastrados</div><div class="stat-number">@ViewBag.Animais</div><a asp-controller="Animais" asp-action="Index">Ver animais →</a></div></div>
+ <div class="col-6 col-xl-3"><div class="stat-card"><div class="stat-icon">A</div><div class="stat-label">Agenda de hoje</div><div class="stat-number">@ViewBag.Agendamentos</div><a asp-controller="Agendamentos" asp-action="Index">Ver agenda →</a></div></div>
+ <div class="col-6 col-xl-3"><div class="stat-card"><div class="stat-icon">C</div><div class="stat-label">Atendimentos</div><div class="stat-number">@ViewBag.Atendimentos</div><a asp-controller="Atendimentos" asp-action="Index">Ver histórico →</a></div></div>
+</div>
+<div class="content-card">
+ <div class="d-flex justify-content-between align-items-center mb-3"><div><h2 class="section-title">Próximos agendamentos</h2><p class="text-muted small mb-0">Atendimentos futuros registrados no sistema</p></div><a asp-controller="Agendamentos" asp-action="Index">Ver todos</a></div>
+ <div class="table-responsive"><table class="table align-middle"><thead><tr><th>Data e hora</th><th>Animal / tutor</th><th>Serviço</th><th>Veterinário</th><th>Status</th></tr></thead><tbody>
+ @foreach (var a in proximos) { <tr><td>@a.DataHora.ToString("dd/MM/yyyy HH:mm")</td><td><strong>@a.Animal?.Nome</strong><div class="small text-muted">@a.Animal?.Tutor?.Nome</div></td><td>@a.Servico?.Nome</td><td>@a.Veterinario?.Nome</td><td><span class="status-pill">@a.Status</span></td></tr> }
+ @if (!proximos.Any()) { <tr><td colspan="5" class="text-center text-muted py-4">Nenhum agendamento futuro.</td></tr> }
+ </tbody></table></div>
+</div>

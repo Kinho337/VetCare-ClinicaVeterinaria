@@ -1,0 +1,12 @@
+@model string?
+<div class="photo-upload mb-3" data-photo-cropper>
+ <label class="form-label">Foto (opcional)</label>
+ @if (!string.IsNullOrWhiteSpace(Model)) { <img class="current-photo mb-2" src="@Model" alt="Foto atual" /> }
+ <input type="file" name="foto" class="form-control photo-input" accept="image/jpeg,image/png,image/webp" />
+ <div class="row g-2 mt-2 align-items-end">
+  <div class="col-sm-5"><label class="form-label small">Proporção</label><select class="form-select crop-ratio"><option value="1">Quadrada (1:1)</option><option value="1.3333">Paisagem (4:3)</option><option value="1.7778">Horizontal (16:9)</option><option value="0.75">Retrato (3:4)</option></select></div>
+  <div class="col-sm-7"><div class="crop-preview-wrap"><canvas class="crop-preview" width="240" height="180"></canvas></div></div>
+ </div>
+ <div class="small text-muted mt-1">Selecione a foto e ajuste o recorte antes de salvar. Máximo de 5 MB.</div>
+ <div class="text-danger small" data-photo-error></div>
+</div>

@@ -1,0 +1,12 @@
+@model Animal
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<div class="row g-3">
+ <div class="col-md-6"><label asp-for="Nome" class="form-label">Nome *</label><input asp-for="Nome" class="form-control"/><span asp-validation-for="Nome" class="text-danger"></span></div>
+ <div class="col-md-3"><label asp-for="Especie" class="form-label">Espécie *</label><select asp-for="Especie" class="form-select"><option>Cão</option><option>Gato</option><option>Ave</option><option>Roedor</option><option>Réptil</option><option>Outro</option></select></div>
+ <div class="col-md-3"><label asp-for="Raca" class="form-label">Raça</label><input asp-for="Raca" class="form-control"/></div>
+ <div class="col-md-4"><label asp-for="Sexo" class="form-label">Sexo</label><select asp-for="Sexo" class="form-select"><option value="">Não informado</option><option>Macho</option><option>Fêmea</option></select></div>
+ <div class="col-md-4"><label asp-for="DataNascimento" class="form-label">Nascimento</label><input asp-for="DataNascimento" type="date" class="form-control"/></div>
+ <div class="col-md-4"><label asp-for="Identificacao" class="form-label">Identificação / microchip</label><input asp-for="Identificacao" class="form-control"/></div>
+ <div class="col-12"><label asp-for="TutorId" class="form-label">Tutor responsável *</label><select asp-for="TutorId" asp-items="ViewBag.Tutores" class="form-select"><option value="">Selecione um tutor</option></select><span asp-validation-for="TutorId" class="text-danger"></span></div>
+ <div class="col-12"><partial name="_PhotoField" model="Model.FotoPerfil"/></div>
+</div>

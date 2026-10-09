@@ -1,0 +1,4 @@
+@model Tutor
+@{ ViewData["Title"] = "Novo tutor"; }
+<div class="page-heading"><div><div class="eyebrow">CADASTROS</div><h1 class="page-title">Novo tutor</h1><p class="text-muted">Preencha os dados do responsável.</p></div><a class="btn btn-light" asp-action="Index">Voltar</a></div>
+<div class="content-card form-card"><form asp-action="Create" method="post" enctype="multipart/form-data"><partial name="_Form" model="Model"/><div class="mt-4 d-flex gap-2"><button class="btn btn-primary">Salvar tutor</button><a class="btn btn-light" asp-action="Index">Cancelar</a></div></form></div>

@@ -1,0 +1,8 @@
+@model IEnumerable<Tutor>
+@{ ViewData["Title"] = "Tutores"; }
+<div class="page-heading"><div><div class="eyebrow">CADASTROS</div><h1 class="page-title">Tutores</h1><p class="text-muted">Responsáveis e seus animais cadastrados.</p></div><a class="btn btn-primary" asp-action="Create">+ Novo tutor</a></div>
+<form class="search-bar mb-3" method="get"><input name="busca" class="form-control" placeholder="Buscar por nome, CPF ou e-mail..." value="@Context.Request.Query["busca"]"/><button class="btn btn-outline-primary">Buscar</button></form>
+<div class="content-card table-responsive"><table class="table align-middle"><thead><tr><th>Tutor</th><th>CPF</th><th>Contato</th><th>Animais</th><th></th></tr></thead><tbody>
+@foreach(var t in Model){<tr><td><div class="d-flex align-items-center gap-2">@if(!string.IsNullOrEmpty(t.FotoPerfil)){<img class="avatar" src="@t.FotoPerfil" alt=""/>}else{<span class="avatar avatar-placeholder">@t.Nome[..1]</span>}<strong>@t.Nome</strong></div></td><td>@t.CPF</td><td>@t.Email<div class="small text-muted">@t.Telefone</div></td><td>@t.Animais.Count</td><td class="text-end"><a class="btn btn-sm btn-light" asp-action="Details" asp-route-id="@t.Id">Abrir</a><a class="btn btn-sm btn-outline-primary" asp-action="Edit" asp-route-id="@t.Id">Editar</a></td></tr>}
+@if(!Model.Any()){<tr><td colspan="5" class="text-center text-muted py-4">Nenhum tutor encontrado.</td></tr>}
+</tbody></table></div>

@@ -1,0 +1,4 @@
+@model IEnumerable<Servico>
+@{ ViewData["Title"] = "Serviços"; }
+<div class="page-heading"><div><div class="eyebrow">CONFIGURAÇÕES</div><h1 class="page-title">Serviços</h1><p class="text-muted">Catálogo de serviços oferecidos.</p></div><a class="btn btn-primary" asp-action="Create">+ Novo serviço</a></div>
+<div class="content-card table-responsive"><table class="table"><thead><tr><th>Serviço</th><th>Descrição</th><th>Preço</th><th>Status</th></tr></thead><tbody>@foreach(var s in Model){<tr><td><strong>@s.Nome</strong></td><td>@s.Descricao</td><td>@s.Preco.ToString("C")</td><td>@(s.Ativo ? "Ativo" : "Inativo")</td></tr>}</tbody></table></div>

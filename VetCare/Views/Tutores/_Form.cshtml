@@ -1,0 +1,10 @@
+@model Tutor
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<div class="row g-3">
+ <div class="col-md-8"><label asp-for="Nome" class="form-label">Nome completo *</label><input asp-for="Nome" class="form-control"/><span asp-validation-for="Nome" class="text-danger"></span></div>
+ <div class="col-md-4"><label asp-for="CPF" class="form-label">CPF *</label><input asp-for="CPF" class="form-control" placeholder="Somente números ou com pontuação"/><span asp-validation-for="CPF" class="text-danger"></span></div>
+ <div class="col-md-6"><label asp-for="Email" class="form-label">E-mail *</label><input asp-for="Email" class="form-control"/><span asp-validation-for="Email" class="text-danger"></span></div>
+ <div class="col-md-6"><label asp-for="Telefone" class="form-label">Telefone *</label><input asp-for="Telefone" class="form-control"/><span asp-validation-for="Telefone" class="text-danger"></span></div>
+ <div class="col-12"><label asp-for="Endereco" class="form-label">Endereço</label><input asp-for="Endereco" class="form-control"/></div>
+ <div class="col-12"><partial name="_PhotoField" model="Model.FotoPerfil"/></div>
+</div>

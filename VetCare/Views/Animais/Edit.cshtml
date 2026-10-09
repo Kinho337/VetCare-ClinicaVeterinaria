@@ -1,0 +1,4 @@
+@model Animal
+@{ ViewData["Title"] = "Editar animal"; }
+<div class="page-heading"><div><div class="eyebrow">CADASTROS</div><h1 class="page-title">Editar animal</h1></div><a class="btn btn-light" asp-action="Details" asp-route-id="@Model.Id">Voltar</a></div>
+<div class="content-card form-card"><form asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data"><input type="hidden" asp-for="Id"/><input type="hidden" asp-for="FotoPerfil"/><partial name="_Form" model="Model"/><div class="mt-4"><button class="btn btn-primary">Salvar alterações</button></div></form></div>

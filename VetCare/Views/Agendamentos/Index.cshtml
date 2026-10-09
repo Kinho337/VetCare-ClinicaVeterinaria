@@ -1,0 +1,7 @@
+@model IEnumerable<Agendamento>
+@{ ViewData["Title"] = "Agendamentos"; }
+<div class="page-heading"><div><div class="eyebrow">AGENDA</div><h1 class="page-title">Agendamentos</h1><p class="text-muted">Organize os horários da equipe.</p></div><a class="btn btn-primary" asp-action="Create">+ Novo agendamento</a></div>
+<div class="content-card table-responsive"><table class="table align-middle"><thead><tr><th>Data e hora</th><th>Animal / tutor</th><th>Serviço</th><th>Veterinário</th><th>Status</th><th>Ações</th></tr></thead><tbody>
+@foreach(var a in Model){<tr><td>@a.DataHora.ToString("dd/MM/yyyy HH:mm")</td><td><strong>@a.Animal?.Nome</strong><div class="small text-muted">@a.Animal?.Tutor?.Nome</div></td><td>@a.Servico?.Nome</td><td>@a.Veterinario?.Nome</td><td><span class="status-pill">@a.Status</span></td><td><div class="d-flex flex-wrap gap-1"><form asp-action="Status" method="post"><input type="hidden" name="id" value="@a.Id"/><input type="hidden" name="status" value="Confirmado"/><button class="btn btn-sm btn-outline-primary">Confirmar</button></form><a class="btn btn-sm btn-light" asp-controller="Atendimentos" asp-action="Create" asp-route-agendamentoId="@a.Id">Atender</a><form asp-action="Status" method="post"><input type="hidden" name="id" value="@a.Id"/><input type="hidden" name="status" value="Cancelado"/><button class="btn btn-sm btn-outline-danger">Cancelar</button></form></div></td></tr>}
+@if(!Model.Any()){<tr><td colspan="6" class="text-center text-muted py-4">Nenhum agendamento.</td></tr>}
+</tbody></table></div>
