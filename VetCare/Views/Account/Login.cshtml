@@ -3,23 +3,23 @@
     ViewData["Title"] = "Entrar";
     Layout = "_Layout";
 }
-<div class="login-shell">
- <div class="login-brand">
-  <div class="brand-mark brand-mark-lg">V</div>
-  <h1>VetCare</h1>
-  <p>Gestão veterinária, cuidado em cada detalhe.</p>
-  <div class="login-paw">✦</div>
+<div class="auth-page login-page">
+ <div class="auth-story">
+  <div class="brand-symbol">✿</div><span class="eyebrow light-eyebrow">CUIDADO EM CADA DETALHE</span>
+  <h1>O cuidado do seu pet, pertinho de você.</h1>
+  <p>Um espaço leve e acolhedor para a saúde dos seus companheiros de quatro patas.</p>
+  <div class="story-pills"><span>♡ Acompanhamento</span><span>✦ Histórico de saúde</span></div><div class="story-illustration" aria-hidden="true">🐾</div>
  </div>
- <div class="login-card">
-  <h2>Bem-vindo de volta</h2>
+ <div class="auth-form-wrap"><div class="auth-form-card">
+  <span class="eyebrow">ACESSO SEGURO</span><h2>Que bom ter você aqui.</h2>
   <p class="text-muted mb-4">Entre com suas credenciais para continuar.</p>
   <form asp-action="Login" method="post">
    <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
    <div class="mb-3"><label asp-for="Email" class="form-label">E-mail</label><input asp-for="Email" class="form-control form-control-lg" placeholder="seu@email.com" autocomplete="username"/><span asp-validation-for="Email" class="text-danger"></span></div>
    <div class="mb-4"><label asp-for="Senha" class="form-label">Senha</label><input asp-for="Senha" class="form-control form-control-lg" placeholder="Sua senha" autocomplete="current-password"/><span asp-validation-for="Senha" class="text-danger"></span></div>
-   <button class="btn btn-primary btn-lg w-100">Entrar no sistema</button>
+   <button class="btn btn-primary btn-lg w-100">Entrar na minha conta <span aria-hidden="true">→</span></button>
   </form>
-  <div class="demo-credentials mt-4"><strong>Ambiente de demonstração</strong><br/>Admin: admin@vetcare.local<br/>Veterinário: vet@vetcare.local<br/>Senha inicial de ambos: <code>VetCare@123</code></div>
- </div>
+  <div class="login-help mt-4"><span class="help-icon">♡</span><span><strong>É a primeira vez por aqui?</strong><br/>Crie sua conta para acompanhar os cuidados do seu pet.</span><a asp-action="Register">Cadastrar</a></div>
+ </div></div>
 </div>

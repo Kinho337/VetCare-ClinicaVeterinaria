@@ -10,7 +10,7 @@ public class Veterinario
     [Required, EmailAddress, StringLength(180)]
     public string Email { get; set; } = "";
     [Required, StringLength(30)]
-    public string CRmv { get; set; } = "";
+    public string CRMV { get; set; } = "";
     [StringLength(30)]
     public string Telefone { get; set; } = "";
     [StringLength(500)]

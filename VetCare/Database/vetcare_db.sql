@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS Usuarios (
   Perfil VARCHAR(30) NOT NULL DEFAULT 'Veterinario',
   FotoPerfil VARCHAR(500) NULL,
   CriadoEm DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  TutorId INT NULL,
   UNIQUE KEY UX_Usuarios_Email (Email)
 ) ENGINE=InnoDB;
 
@@ -29,11 +30,11 @@ CREATE TABLE IF NOT EXISTS Veterinarios (
   Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   Nome VARCHAR(120) NOT NULL,
   Email VARCHAR(180) NOT NULL,
-  CRmv VARCHAR(30) NOT NULL,
+  CRMV VARCHAR(30) NOT NULL,
   Telefone VARCHAR(30) NOT NULL DEFAULT '',
   FotoPerfil VARCHAR(500) NULL,
   UNIQUE KEY UX_Veterinarios_Email (Email),
-  UNIQUE KEY UX_Veterinarios_CRMV (CRmv)
+  UNIQUE KEY UX_Veterinarios_CRMV (CRMV)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS Servicos (
@@ -54,8 +55,38 @@ CREATE TABLE IF NOT EXISTS Animais (
   Identificacao VARCHAR(80) NULL,
   FotoPerfil VARCHAR(500) NULL,
   TutorId INT NOT NULL,
+  CodigoVinculo VARCHAR(24) NOT NULL,
+  UNIQUE KEY UX_Animais_CodigoVinculo (CodigoVinculo),
   CONSTRAINT FK_Animais_Tutores FOREIGN KEY (TutorId) REFERENCES Tutores(Id) ON DELETE RESTRICT,
   INDEX IX_Animais_TutorId (TutorId)
+) ENGINE=InnoDB;
+
+ALTER TABLE Usuarios
+  ADD CONSTRAINT FK_Usuarios_Tutores FOREIGN KEY (TutorId) REFERENCES Tutores(Id) ON DELETE SET NULL;
+
+CREATE TABLE IF NOT EXISTS AnimalTutores (
+  AnimalId INT NOT NULL,
+  TutorId INT NOT NULL,
+  VinculadoEm DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  TipoVinculo VARCHAR(30) NOT NULL DEFAULT 'Tutor',
+  PRIMARY KEY (AnimalId, TutorId),
+  CONSTRAINT FK_AnimalTutores_Animais FOREIGN KEY (AnimalId) REFERENCES Animais(Id) ON DELETE CASCADE,
+  CONSTRAINT FK_AnimalTutores_Tutores FOREIGN KEY (TutorId) REFERENCES Tutores(Id) ON DELETE CASCADE,
+  INDEX IX_AnimalTutores_TutorId (TutorId)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS SolicitacoesVinculoAnimal (
+  Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  AnimalId INT NOT NULL,
+  TutorId INT NOT NULL,
+  Status VARCHAR(20) NOT NULL DEFAULT 'Pendente',
+  Mensagem VARCHAR(500) NULL,
+  CriadoEm DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  ResolvidoEm DATETIME NULL,
+  ResolvidoPor VARCHAR(180) NULL,
+  CONSTRAINT FK_SolicitacoesVinculoAnimal_Animais FOREIGN KEY (AnimalId) REFERENCES Animais(Id) ON DELETE CASCADE,
+  CONSTRAINT FK_SolicitacoesVinculoAnimal_Tutores FOREIGN KEY (TutorId) REFERENCES Tutores(Id) ON DELETE CASCADE,
+  INDEX IX_SolicitacoesVinculoAnimal_Animal_Tutor_Status (AnimalId, TutorId, Status)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS Agendamentos (
@@ -93,3 +124,7 @@ CREATE TABLE IF NOT EXISTS Atendimentos (
 
 -- Os usuários de demonstração são criados pelo DbSeeder, com hash de senha via PasswordHasher.
 -- Não insira senhas em texto puro nesta tabela.
+
+-- Garante o vínculo principal para qualquer paciente preexistente sem duplicar relações.
+INSERT IGNORE INTO AnimalTutores (AnimalId, TutorId, TipoVinculo)
+SELECT Id, TutorId, 'Principal' FROM Animais;

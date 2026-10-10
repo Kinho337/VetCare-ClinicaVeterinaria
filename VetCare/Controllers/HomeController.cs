@@ -5,7 +5,7 @@ using VetCare.Data;
 
 namespace VetCare.Controllers;
 
-[Authorize]
+[Authorize(Roles = "Administrador,Veterinario,Recepcionista")]
 public class HomeController(VetCareDbContext db) : Controller
 {
     public async Task<IActionResult> Index()

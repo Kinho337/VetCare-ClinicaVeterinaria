@@ -27,7 +27,7 @@ public static class DbSeeder
             );
         }
         if (!await db.Veterinarios.AnyAsync())
-            db.Veterinarios.Add(new Veterinario { Nome = "Dra. Ana Oliveira", Email = "ana@vetcare.local", CRmv = "CRMV-SP 12345", Telefone = "(11) 90000-0000" });
+            db.Veterinarios.Add(new Veterinario { Nome = "Dra. Ana Oliveira", Email = "ana@vetcare.local", CRMV = "CRMV-SP 12345", Telefone = "(11) 90000-0000" });
         await db.SaveChangesAsync();
     }
 }

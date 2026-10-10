@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 using VetCare.Data;
 using VetCare.Models;
 
@@ -11,7 +12,9 @@ namespace VetCare.Controllers;
 public class AnimaisController(VetCareDbContext db, PhotoService photos) : Controller
 {
     public async Task<IActionResult> Index(string? busca) =>
-        View(await db.Animais.Include(x => x.Tutor).Where(x => string.IsNullOrEmpty(busca) || x.Nome.Contains(busca) || x.Tutor!.Nome.Contains(busca)).OrderBy(x => x.Nome).ToListAsync());
+        View(await db.Animais.Include(x => x.Tutor).Include(x => x.TutorVinculos).ThenInclude(x => x.Tutor)
+            .Where(x => string.IsNullOrEmpty(busca) || x.Nome.Contains(busca) || x.Tutor!.Nome.Contains(busca) || x.TutorVinculos.Any(v => v.Tutor.Nome.Contains(busca)))
+            .OrderBy(x => x.Nome).ToListAsync());
 
     public async Task<IActionResult> Create(int? tutorId)
     {
@@ -24,17 +27,27 @@ public class AnimaisController(VetCareDbContext db, PhotoService photos) : Contr
     {
         await FillTutors();
         if (!await db.Tutores.AnyAsync(x => x.Id == model.TutorId)) ModelState.AddModelError(nameof(model.TutorId), "Selecione um tutor válido.");
+        if (!string.IsNullOrWhiteSpace(model.Identificacao) && await db.Animais.AnyAsync(x => x.Identificacao == model.Identificacao.Trim()))
+            ModelState.AddModelError(nameof(model.Identificacao), "Já existe um animal com essa identificação/microchip. Pesquise a ficha existente para evitar duplicidade.");
         if (!ModelState.IsValid) return View(model);
         try { model.FotoPerfil = await photos.SaveAsync(foto); }
         catch (InvalidOperationException ex) { ModelState.AddModelError("foto", ex.Message); return View(model); }
-        db.Animais.Add(model); await db.SaveChangesAsync();
+        model.CodigoVinculo = Convert.ToHexString(RandomNumberGenerator.GetBytes(8));
+        await using var transaction = await db.Database.BeginTransactionAsync();
+        db.Animais.Add(model);
+        await db.SaveChangesAsync();
+        db.AnimalTutores.Add(new AnimalTutor { AnimalId = model.Id, TutorId = model.TutorId, TipoVinculo = "Principal" });
+        await db.SaveChangesAsync();
+        await transaction.CommitAsync();
         TempData["Sucesso"] = "Animal cadastrado e vinculado ao tutor.";
         return RedirectToAction("Details", "Tutores", new { id = model.TutorId });
     }
 
     public async Task<IActionResult> Details(int id)
     {
-        var animal = await db.Animais.Include(x => x.Tutor).Include(x => x.Atendimentos).ThenInclude(x => x.Veterinario)
+        var animal = await db.Animais.Include(x => x.Tutor)
+            .Include(x => x.TutorVinculos).ThenInclude(x => x.Tutor)
+            .Include(x => x.Atendimentos).ThenInclude(x => x.Veterinario)
             .FirstOrDefaultAsync(x => x.Id == id);
         return animal is null ? NotFound() : View(animal);
     }
@@ -54,9 +67,16 @@ public class AnimaisController(VetCareDbContext db, PhotoService photos) : Contr
         var existing = await db.Animais.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         if (existing is null) return NotFound();
         if (!ModelState.IsValid) { model.FotoPerfil = existing.FotoPerfil; return View(model); }
+        if (!string.IsNullOrWhiteSpace(model.Identificacao) && await db.Animais.AnyAsync(x => x.Id != id && x.Identificacao == model.Identificacao.Trim()))
+            ModelState.AddModelError(nameof(model.Identificacao), "Já existe um animal com essa identificação/microchip.");
+        if (!ModelState.IsValid) { model.FotoPerfil = existing.FotoPerfil; return View(model); }
         try { model.FotoPerfil = await photos.SaveAsync(foto) ?? existing.FotoPerfil; }
         catch (InvalidOperationException ex) { ModelState.AddModelError("foto", ex.Message); model.FotoPerfil = existing.FotoPerfil; return View(model); }
-        db.Animais.Update(model); await db.SaveChangesAsync();
+        model.CodigoVinculo = existing.CodigoVinculo;
+        db.Animais.Update(model);
+        if (!await db.AnimalTutores.AnyAsync(x => x.AnimalId == id && x.TutorId == model.TutorId))
+            db.AnimalTutores.Add(new AnimalTutor { AnimalId = id, TutorId = model.TutorId, TipoVinculo = "Principal" });
+        await db.SaveChangesAsync();
         TempData["Sucesso"] = "Cadastro do animal atualizado.";
         return RedirectToAction(nameof(Details), new { id });
     }

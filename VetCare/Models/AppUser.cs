@@ -16,4 +16,6 @@ public class AppUser
     [StringLength(500)]
     public string? FotoPerfil { get; set; }
     public DateTime CriadoEm { get; set; } = DateTime.UtcNow;
+    public int? TutorId { get; set; }
+    public Tutor? Tutor { get; set; }
 }

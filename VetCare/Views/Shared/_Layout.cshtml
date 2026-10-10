@@ -3,45 +3,57 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@ViewData["Title"] - VetCare</title>
+    <title>@ViewData["Title"] · VetCare</title>
+    <meta name="theme-color" content="#2768d8" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
 </head>
 <body>
 <header>
-<nav class="navbar navbar-expand-lg navbar-dark vc-navbar">
- <div class="container-fluid px-lg-4">
-  <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index"><span class="brand-mark">V</span> VetCare</a>
-  @if (User.Identity?.IsAuthenticated == true) {
-   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"><span class="navbar-toggler-icon"></span></button>
-   <div class="collapse navbar-collapse" id="mainNav">
+<nav class="navbar navbar-expand-lg vc-navbar">
+ <div class="container-xl">
+  <a class="navbar-brand fw-bold" asp-controller="@(User.IsInRole("Cliente") ? "Portal" : "Home")" asp-action="Index"><span class="brand-mark">v</span><span>vetcare<span class="brand-dot">.</span></span></a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-label="Abrir menu"><span class="navbar-toggler-icon"></span></button>
+  <div class="collapse navbar-collapse" id="mainNav">
+   @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Cliente"))
+   {
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0"><li class="nav-item"><a class="nav-link" asp-controller="Portal" asp-action="Index">Meu espaço</a></li></ul>
+   }
+   else if (User.Identity?.IsAuthenticated == true)
+   {
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
      <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Painel</a></li>
      <li class="nav-item"><a class="nav-link" asp-controller="Tutores" asp-action="Index">Tutores</a></li>
-     <li class="nav-item"><a class="nav-link" asp-controller="Animais" asp-action="Index">Animais</a></li>
+     <li class="nav-item"><a class="nav-link" asp-controller="Animais" asp-action="Index">Pacientes</a></li>
      <li class="nav-item"><a class="nav-link" asp-controller="Agendamentos" asp-action="Index">Agenda</a></li>
      <li class="nav-item"><a class="nav-link" asp-controller="Atendimentos" asp-action="Index">Atendimentos</a></li>
-     @if (User.IsInRole("Administrador") || User.IsInRole("Veterinario")) {
-      <li class="nav-item"><a class="nav-link" asp-controller="Veterinarios" asp-action="Index">Veterinários</a></li>
-     }
-     @if (User.IsInRole("Administrador")) {
-      <li class="nav-item"><a class="nav-link" asp-controller="Servicos" asp-action="Index">Serviços</a></li>
-     }
+     <li class="nav-item"><a class="nav-link" asp-controller="Vinculos" asp-action="Index">Vínculos</a></li>
+     @if (User.IsInRole("Administrador") || User.IsInRole("Veterinario")) { <li class="nav-item"><a class="nav-link" asp-controller="Veterinarios" asp-action="Index">Equipe</a></li> }
+     @if (User.IsInRole("Administrador")) { <li class="nav-item"><a class="nav-link" asp-controller="Servicos" asp-action="Index">Serviços</a></li> }
     </ul>
-    <div class="d-flex align-items-center gap-3 text-white">
-     <span class="small">@User.Identity?.Name <span class="opacity-75">(@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value)</span></span>
-     <form asp-controller="Account" asp-action="Logout" method="post"><button class="btn btn-sm btn-outline-light">Sair</button></form>
-    </div>
+   }
+   <div class="d-flex align-items-center gap-3 ms-lg-3">
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+     <span class="nav-user"><span class="user-dot">@(User.Identity.Name?.FirstOrDefault().ToString().ToUpperInvariant() ?? "V")</span><span class="d-none d-sm-inline">@User.Identity?.Name</span></span>
+     <form asp-controller="Account" asp-action="Logout" method="post"><button class="btn btn-sm btn-outline-primary">Sair</button></form>
+    }
+    else
+    {
+     <a class="nav-link" asp-controller="Account" asp-action="Login">Entrar</a>
+     <a class="btn btn-primary btn-sm px-3" asp-controller="Account" asp-action="Register">Criar conta</a>
+    }
    </div>
-  }
+  </div>
  </div>
 </nav>
 </header>
-<main class="container-fluid px-3 px-lg-4 py-4">
- @if (TempData["Sucesso"] is string msg) { <div class="alert alert-success alert-dismissible fade show" role="alert">@msg<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div> }
+<main class="container-xl page-container">
+ @if (TempData["Sucesso"] is string msg) { <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">@msg<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button></div> }
+ @if (TempData["Erro"] is string erro) { <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">@erro<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button></div> }
  @RenderBody()
 </main>
-<footer class="container-fluid px-4 py-3 text-center small text-muted">VetCare · Gestão veterinária</footer>
+<footer class="site-footer"><div class="container-xl d-flex flex-wrap justify-content-between gap-2"><span><span class="brand-mark footer-mark">v</span> vetcare · cuidado que conecta</span><span>Uma vida mais saudável para quem você ama.</span></div></footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/photo-cropper.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", required: false)

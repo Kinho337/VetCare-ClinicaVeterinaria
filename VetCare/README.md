@@ -1,105 +1,107 @@
-# VetCare — Sistema de Gestão Veterinária
+# VetCare — plataforma de cuidado veterinário
 
-Sistema web acadêmico de gestão de clínica veterinária, desenvolvido em **ASP.NET Core MVC (.NET 8), C#, Entity Framework Core e MySQL**. A interface utiliza identidade visual azul royal e branco, layout responsivo e componentes Razor.
+Aplicação MVC para gestão da clínica e acompanhamento dos pacientes pelos seus tutores. Desenvolvida com ASP.NET Core MVC (.NET 8), C#, Entity Framework Core e MySQL.
 
-## Módulos
+## O que esta versão acrescenta
 
-- **Autenticação e autorização:** login com cookie e perfis Administrador, Veterinário e Recepcionista.
-- **Tutores:** cadastro, edição, consulta, foto de perfil e validação de CPF/e-mail duplicados.
-- **Animais:** cadastro associado a tutor, espécie, raça, sexo, identificação, nascimento e foto; histórico clínico por paciente.
-- **Veterinários:** cadastro profissional, CRMV, contato e foto; prevenção de e-mail/CRMV duplicados.
-- **Serviços:** catálogo de procedimentos e preços.
-- **Agendamentos:** associação de animal, profissional e serviço, com validação de horário ocupado.
-- **Atendimentos:** queixa, diagnóstico, observações, medicações recomendadas e foto/anexo.
-- **Relatório clínico:** dados do animal, tutor, veterinário e atendimento, com impressão ou opção de salvar como PDF pelo navegador.
-- **Experiência de uso:** painel inicial, buscas, mensagens de retorno, formulários com validação e recorte de fotos no navegador.
+- Interface responsiva mais acolhedora, com linguagem visual leve, azul, menta e cartões adaptados para celular.
+- Cadastro público de clientes/tutores, login e área **Meu espaço**.
+- Portal do tutor com os pets associados à sua conta, próximos agendamentos, histórico recente de atendimentos e solicitações de vínculo.
+- Relação muitos-para-muitos entre tutores e animais: um tutor pode acompanhar vários pets e um pet pode ter vários tutores, sem duplicar a ficha clínica.
+- Código de vínculo por animal e fluxo de solicitação com aprovação pela equipe. O cliente não recebe acesso à ficha de outra família apenas por saber o nome do pet.
+- Proteção de rotas por perfil: `Cliente` acessa o portal; `Administrador`, `Veterinario` e `Recepcionista` acessam a área operacional conforme as permissões dos controllers.
+- Validação de identificação/microchip repetida no cadastro de animais.
+- Padronização da propriedade `CRMV`.
 
-## Requisitos
+## Tecnologias e requisitos
 
-- Windows 10/11 ou sistema compatível com .NET 8
 - .NET SDK 8.0
-- MySQL 8.0 ou compatível (servidor local, XAMPP/WAMP ou serviço MySQL)
-- Visual Studio 2022 com a carga de trabalho **Desenvolvimento ASP.NET e Web**, ou VS Code com extensão C#
-- Navegador moderno e conexão com internet para Bootstrap via CDN
+- MySQL 8 ou compatível
+- Visual Studio 2022 com a carga de trabalho **Desenvolvimento ASP.NET e Web**
+- Conexão com a internet para Bootstrap, fontes e validação JavaScript via CDN
 
-## Abrir no Visual Studio
+## Importante se você já tem o banco de dados criado
 
-1. Extraia o ZIP para uma pasta sem acentos ou caracteres especiais, se possível.
-2. Abra `VetCare.sln` (ou, se preferir, `VetCare/VetCare.csproj`) no Visual Studio 2022.
-3. Aguarde a restauração dos pacotes NuGet.
-4. Abra `VetCare/appsettings.json` e configure a conexão MySQL (exemplo abaixo).
-5. Confirme que o serviço MySQL está iniciado e que o banco está criado.
-6. No menu **Compilação**, selecione **Recompilar Solução**. Corrija qualquer erro antes de executar.
-7. Pressione `F5` ou `Ctrl+F5`. O Visual Studio abrirá a URL local exibida no navegador/saída.
+Esta versão adiciona colunas e tabelas; `EnsureCreated()` não atualiza tabelas existentes. **Faça backup do banco antes de continuar.**
 
-## Configurar o MySQL
+1. Abra `VetCare/appsettings.json` e confira `Database=vetcare_db`, usuário e senha. A senha foi substituída por um marcador neste pacote; preencha a sua localmente.
+2. No MySQL Workbench, selecione o banco que a aplicação realmente usa.
+3. Abra `VetCare/Database/upgrade_v1_vinculos.sql`. O script está direcionado ao banco `vetcare_db`; se o seu banco tiver outro nome, ajuste a linha `USE vetcare_db;` para o nome correto.
+4. Execute o script **uma única vez** no banco existente. Ele adiciona o vínculo da conta de cliente, cria códigos para os animais já cadastrados, cria as tabelas de relacionamento e preserva a ficha dos pets existentes.
+5. Se o MySQL informar que uma coluna/tabela já existe, pare e confira o estado do banco antes de tentar executar de novo. Não execute o script de atualização repetidamente.
+6. Não rode `Database/vetcare_db.sql` sobre a base existente. Esse é o script completo para uma instalação nova.
 
-O arquivo `Database/vetcare_db.sql` contém o script completo de criação do esquema. Execute-o no MySQL Workbench **antes da primeira execução**, usando uma conta com permissão para criar banco e tabelas. O script cria o banco `vetcare_db`.
+Para uma instalação nova, execute `Database/vetcare_db.sql` no MySQL Workbench; depois configure a string de conexão e inicie a aplicação.
 
-Depois, ajuste `VetCare/appsettings.json`. Exemplo para MySQL local com usuário `root`:
+## Configurar conexão
+
+Em `VetCare/appsettings.json`, ajuste a string para as credenciais locais:
 
 ```json
-"ConnectionStrings": {
-  "DefaultConnection": "server=localhost;port=3306;database=vetcare_db;user=root;password=SUA_SENHA;"
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Port=3306;Database=vetcare_db;Uid=root;Pwd=SUA_SENHA;"
+  }
 }
 ```
 
-Substitua `SUA_SENHA` pela senha real do seu MySQL. Não compartilhe nem publique credenciais reais no GitHub. A aplicação também reconhece a chave `LocalConnection` por compatibilidade, mas `DefaultConnection` é o nome recomendado.
+Não publique senhas reais no GitHub. A aplicação também aceita a chave `LocalConnection` por compatibilidade, mas `DefaultConnection` é a recomendada.
 
-> Se você já executou o script SQL, não precisa criar o banco de novo. Confirme apenas que o nome do banco na string é o mesmo que foi criado. O usuário MySQL precisa ter permissão de leitura, gravação e alteração de esquema para a inicialização acadêmica.
+## Executar pelo Visual Studio
 
-## Executar pelo terminal
+1. Extraia o ZIP para uma pasta nova. Não misture os arquivos com a cópia antiga.
+2. Abra `VetCare.sln`.
+3. Aguarde a restauração dos pacotes NuGet.
+4. Confira a conexão com MySQL.
+5. Use **Compilação → Recompilar Solução**.
+6. Execute com `Ctrl+F5` ou `F5`.
 
-Abra um terminal na pasta `VetCare` — a mesma que contém `VetCare.csproj` — e execute:
+A primeira execução mantém o seed dos perfis de demonstração se a tabela de usuários estiver vazia.
 
-```powershell
-dotnet --info
-dotnet restore
-dotnet build
-dotnet run
-```
+## Contas iniciais
 
-Use a URL `http://localhost:...` ou `https://localhost:...` que aparecer no terminal. Se `dotnet --info` não funcionar, instale o .NET 8 SDK e reabra o terminal.
-
-## Contas iniciais de demonstração
-
-Na primeira inicialização, o sistema cria as contas de demonstração se a tabela de usuários estiver vazia:
-
-| Perfil | Login | Senha inicial |
+| Perfil | E-mail | Senha inicial |
 |---|---|---|
 | Administrador | `admin@vetcare.local` | `VetCare@123` |
 | Veterinário | `vet@vetcare.local` | `VetCare@123` |
 
-O `DbSeeder` também cadastra serviços de exemplo e uma veterinária demonstrativa. Essas credenciais são apenas para demonstração local; altere-as antes de qualquer implantação compartilhada.
+O tutor cria sua própria conta em **Criar conta**. Se o tutor já existir na base da clínica, ele pode usar o mesmo CPF e e-mail para associar a conta ao cadastro existente, evitando duplicidade. Credenciais demonstrativas devem ser alteradas antes de publicar a aplicação.
 
-## Roteiro rápido de demonstração
+## Fluxo de vínculo familiar
 
-1. Entre com a conta de veterinário.
-2. Cadastre um tutor e tente repetir CPF/e-mail para demonstrar a validação.
-3. Abra o tutor e cadastre um ou mais animais com fotos.
-4. Confira o cadastro de veterinários e os serviços disponíveis.
-5. Crie um agendamento para um animal, serviço e profissional.
-6. Registre o atendimento com queixa, diagnóstico, plano/observações e medicações recomendadas.
-7. Abra o relatório clínico e use a impressão do navegador para gerar PDF.
+1. A equipe abre o perfil do animal e fornece o **código de vínculo** à pessoa autorizada.
+2. O familiar cria uma conta com seus próprios dados.
+3. No portal, informa o código e envia a solicitação.
+4. A equipe abre **Vínculos** e aprova ou recusa.
+5. Após a aprovação, o animal aparece no portal do familiar com a mesma ficha clínica, histórico e agendamentos. Nenhum novo animal é criado.
 
-## Estrutura do projeto
+A aprovação pela equipe é intencional: compartilhar o mesmo animal deve compartilhar o histórico de saúde, então o acesso precisa ser autorizado.
 
-- `Controllers/` — ações e fluxo HTTP MVC
-- `Models/` — entidades de domínio
-- `ViewModels/` — modelos específicos de formulários/telas
-- `Data/` — contexto EF Core, carga inicial e serviço de fotos
+## Roteiro de teste manual
+
+- [ ] Entre como administrador e confira o painel operacional.
+- [ ] Crie um animal e confirme que ele recebeu um código de vínculo.
+- [ ] Cadastre uma conta de cliente com CPF e e-mail inéditos.
+- [ ] Entre no portal do cliente e envie uma solicitação usando o código do animal.
+- [ ] Saia e entre como administrador/veterinário; abra **Vínculos** e aprove a solicitação.
+- [ ] Entre novamente como cliente e confirme que o mesmo animal aparece no portal.
+- [ ] Crie outra conta de cliente com outro CPF/e-mail e solicite o mesmo código.
+- [ ] Aprove a segunda solicitação e confirme que o animal continua com o mesmo ID e uma única ficha.
+- [ ] Confira se o cliente não consegue abrir as rotas administrativas.
+- [ ] Confira cadastros, agendamentos, atendimentos e relatório clínico existentes.
+
+## Estrutura
+
+- `Controllers/` — ações MVC e controle de acesso
+- `Models/` — entidades de domínio e relacionamentos
+- `ViewModels/` — modelos de formulários e do portal
+- `Data/` — contexto EF Core, seed e serviço de fotos
 - `Views/` — páginas Razor
-- `wwwroot/css/` e `wwwroot/js/` — estilos e scripts do cliente
-- `Database/vetcare_db.sql` — esquema MySQL
-- `Program.cs` — ponto de entrada e configuração dos serviços
+- `wwwroot/css/site.css` — identidade visual responsiva
+- `Database/vetcare_db.sql` — esquema completo para base nova
+- `Database/upgrade_v1_vinculos.sql` — atualização de uma base anterior
+- `Program.cs` — inicialização e configuração dos serviços
 
-## Notas técnicas e limitações
+## Limitação de validação
 
-- A aplicação usa `EnsureCreated` para facilitar a inicialização acadêmica sem migrations. Mudanças futuras no modelo não atualizam automaticamente um banco já criado; em desenvolvimento, use um banco recriável ou evolua o projeto para migrations EF Core.
-- A verificação de conflito de agenda deve ser expandida para considerar duração e sobreposição de intervalos antes de uso real.
-- Antes de produção, adicione gestão de contas e redefinição de senha, auditoria, backups, limites/validação de uploads, políticas de privacidade e revisão de LGPD e segurança.
-- Este projeto é uma base acadêmica e demonstrativa, não substitui um sistema clínico validado para uso profissional.
-
-## Git e histórico de desenvolvimento
-
-O ZIP contém o código-fonte, não um histórico Git preexistente. Para iniciar um repositório, use `git init` e registre commits reais por etapa. Não simule datas nem histórico anterior. Sugestões de etapas: estrutura MVC; persistência MySQL; autenticação; tutores; animais; upload de fotos; agenda; prontuário; refinamento visual; documentação.
+O pacote foi revisado estruturalmente, mas a compilação e os fluxos de MySQL precisam ser executados no seu ambiente com o SDK .NET e o banco configurado. A checklist acima é o roteiro de validação após abrir a solução.

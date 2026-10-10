@@ -1,0 +1,87 @@
+@model PortalViewModel
+@{
+    ViewData["Title"] = "Meus pets";
+}
+<div class="portal-hero">
+    <div>
+        <span class="eyebrow light-eyebrow">SEU ESPAÇO VETCARE</span>
+        <h1>Oi, @Model.Tutor.Nome.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] <span aria-hidden="true">♡</span></h1>
+        <p>Um cantinho para acompanhar a saúde e os momentos importantes dos seus companheiros.</p>
+    </div>
+    <div class="portal-hero-paw" aria-hidden="true">🐾</div>
+</div>
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-4"><div class="portal-stat"><span class="portal-stat-icon">♡</span><div><strong>@Model.Animais.Count</strong><span>pet(s) conectados</span></div></div></div>
+    <div class="col-6 col-lg-4"><div class="portal-stat"><span class="portal-stat-icon">✚</span><div><strong>@Model.Atendimentos.Count</strong><span>atendimento(s) no histórico</span></div></div></div>
+    <div class="col-12 col-lg-4"><div class="portal-stat"><span class="portal-stat-icon">◷</span><div><strong>@Model.Agendamentos.Count(x => x.DataHora >= DateTime.Now && x.Status != "Cancelado")</strong><span>próximo(s) cuidado(s) agendado(s)</span></div></div></div>
+</div>
+<div class="section-heading">
+    <div><span class="eyebrow">FAMÍLIA DE PATAS</span><h2>Meus pets</h2><p>As fichas são únicas: se outro familiar já cadastrou seu pet, solicite o vínculo em vez de criar outro cadastro.</p></div>
+</div>
+@if (Model.Animais.Count == 0)
+{
+    <div class="friendly-empty"><div class="empty-paw">🐾</div><h3>Vamos encontrar seu pet?</h3><p>Se ele já é atendido na VetCare, peça à clínica o código de vínculo e solicite acesso abaixo. Assim, a ficha e o histórico dele continuam únicos.</p></div>
+}
+else
+{
+    <div class="row g-3 mb-4">
+    @foreach (var pet in Model.Animais)
+    {
+        <div class="col-md-6 col-xl-4">
+            <article class="pet-card">
+                @if (!string.IsNullOrWhiteSpace(pet.FotoPerfil)) { <img class="pet-card-photo" src="@pet.FotoPerfil" alt="Foto de @pet.Nome"/> }
+                else { <div class="pet-card-photo pet-placeholder" aria-hidden="true">🐾</div> }
+                <div class="pet-card-content">
+                    <div class="pet-card-top"><div><h3>@pet.Nome</h3><p>@pet.Especie · @(pet.Raca ?? "Raça não informada")</p></div><span class="pet-heart">♡</span></div>
+                    <div class="pet-meta"><span>Sexo</span><strong>@(pet.Sexo ?? "Não informado")</strong></div>
+                    <div class="pet-meta"><span>Nascimento</span><strong>@(pet.DataNascimento?.ToString("dd/MM/yyyy") ?? "Não informado")</strong></div>
+                    <div class="pet-card-footer"><span>Ficha acompanhada pela clínica</span><span class="pet-status">Conectado</span></div>
+                </div>
+            </article>
+        </div>
+    }
+    </div>
+}
+<div class="row g-4">
+    <div class="col-lg-5">
+        <section class="content-card soft-card h-100">
+            <span class="eyebrow">MAIS UM FAMILIAR?</span><h2 class="section-title mt-1 mb-2">Conectar um pet existente</h2>
+            <p class="text-muted small">Use o código fornecido pela clínica. A equipe confirma a solicitação antes de liberar os dados.</p>
+            <form asp-action="SolicitarVinculo" method="post">
+                <div class="mb-3"><label class="form-label" for="codigo">Código de vínculo</label><input class="form-control text-uppercase" id="codigo" name="codigo" required maxlength="24" placeholder="Ex.: A1B2C3D4E5"/></div>
+                <div class="mb-3"><label class="form-label" for="mensagem">Mensagem para a equipe (opcional)</label><textarea class="form-control" id="mensagem" name="mensagem" rows="2" maxlength="500" placeholder="Ex.: sou a outra tutora do animal"></textarea></div>
+                <button class="btn btn-primary">Solicitar vínculo</button>
+            </form>
+            @if (Model.Solicitacoes.Any())
+            {
+                <hr/><h3 class="small fw-bold">Minhas solicitações recentes</h3>
+                @foreach (var s in Model.Solicitacoes)
+                {
+                    <div class="request-row"><span><strong>@s.Animal.Nome</strong><small>@s.CriadoEm.ToLocalTime().ToString("dd/MM/yyyy")</small></span><span class="request-status @s.Status.ToLowerInvariant()">@s.Status</span></div>
+                }
+            }
+        </section>
+    </div>
+    <div class="col-lg-7">
+        <section class="content-card h-100">
+            <span class="eyebrow">ACOMPANHAMENTO</span><h2 class="section-title mt-1 mb-3">Próximos cuidados</h2>
+            @if (!Model.Agendamentos.Any(x => x.DataHora >= DateTime.Now && x.Status != "Cancelado")) { <div class="soft-empty">Nenhum agendamento futuro por enquanto.</div> }
+            else
+            {
+                @foreach (var a in Model.Agendamentos.Where(x => x.DataHora >= DateTime.Now && x.Status != "Cancelado").OrderBy(x => x.DataHora))
+                {
+                    <div class="timeline-row"><div class="timeline-date"><strong>@a.DataHora.ToString("dd")</strong><span>@a.DataHora.ToString("MMM", new System.Globalization.CultureInfo("pt-BR"))</span></div><div class="timeline-copy"><strong>@a.Animal?.Nome · @a.Servico?.Nome</strong><p>@a.DataHora.ToString("HH:mm") · @(a.Veterinario?.Nome ?? "Equipe VetCare")</p><span class="status-pill">@a.Status</span></div></div>
+                }
+            }
+            <hr/><h3 class="section-title mb-3">Histórico recente</h3>
+            @if (!Model.Atendimentos.Any()) { <div class="soft-empty">Quando houver consultas, vacinas e retornos, eles aparecerão aqui.</div> }
+            else
+            {
+                @foreach (var at in Model.Atendimentos.Take(5))
+                {
+                    <div class="history-row"><div class="history-icon">✚</div><div><strong>@at.Animal?.Nome · @at.DataHora.ToLocalTime().ToString("dd/MM/yyyy")</strong><p>@(at.Diagnostico.Length > 120 ? at.Diagnostico[..120] + "…" : at.Diagnostico)</p><small>Atendido por @(at.Veterinario?.Nome ?? "equipe veterinária")</small></div></div>
+                }
+            }
+        </section>
+    </div>
+</div>

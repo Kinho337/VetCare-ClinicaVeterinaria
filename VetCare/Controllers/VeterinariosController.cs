@@ -16,7 +16,7 @@ public class VeterinariosController(VetCareDbContext db, PhotoService photos) : 
     {
         model.Email = model.Email.Trim().ToLowerInvariant();
         if (await db.Veterinarios.AnyAsync(x => x.Email == model.Email)) ModelState.AddModelError(nameof(model.Email), "E-mail já cadastrado.");
-        if (await db.Veterinarios.AnyAsync(x => x.CRmv == model.CRmv)) ModelState.AddModelError(nameof(model.CRmv), "CRMV já cadastrado.");
+        if (await db.Veterinarios.AnyAsync(x => x.CRMV == model.CRMV)) ModelState.AddModelError(nameof(model.CRMV), "CRMV já cadastrado.");
         if (!ModelState.IsValid) return View(model);
         try { model.FotoPerfil = await photos.SaveAsync(foto); }
         catch (InvalidOperationException ex) { ModelState.AddModelError("foto", ex.Message); return View(model); }

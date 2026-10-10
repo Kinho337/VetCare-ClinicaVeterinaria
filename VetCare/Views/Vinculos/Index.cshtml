@@ -1,0 +1,10 @@
+@model IEnumerable<SolicitacaoVinculoAnimal>
+@{ ViewData["Title"] = "Solicitações de vínculo"; }
+<div class="page-heading"><div><div class="eyebrow">FAMÍLIAS E PACIENTES</div><h1 class="page-title">Solicitações de vínculo</h1><p class="text-muted mb-0">Confirme o acesso de outros tutores sem criar uma segunda ficha para o mesmo animal.</p></div><span class="status-pill">@Model.Count(x => x.Status == "Pendente") pendente(s)</span></div>
+<div class="content-card table-responsive"><table class="table align-middle"><thead><tr><th>Solicitante</th><th>Pet existente</th><th>Solicitação</th><th>Status</th><th>Ações</th></tr></thead><tbody>
+@foreach (var s in Model)
+{
+<tr><td><strong>@s.Tutor.Nome</strong><div class="small text-muted">@s.Tutor.Email</div><div class="small text-muted">@s.Tutor.Telefone</div></td><td><strong>@s.Animal.Nome</strong><div class="small text-muted">@s.Animal.Especie · @(s.Animal.Raca ?? "Raça não informada")</div><div class="small text-muted">Ficha #@s.Animal.Id</div></td><td><div>@s.CriadoEm.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</div><div class="small text-muted">@s.Mensagem</div></td><td><span class="request-status @s.Status.ToLowerInvariant()">@s.Status</span></td><td>@if(s.Status == "Pendente"){<div class="d-flex gap-2"><form asp-action="Aprovar" method="post"><input type="hidden" name="id" value="@s.Id"/><button class="btn btn-sm btn-primary">Aprovar</button></form><form asp-action="Recusar" method="post"><input type="hidden" name="id" value="@s.Id"/><button class="btn btn-sm btn-outline-danger">Recusar</button></form></div>}else{<span class="small text-muted">@(s.ResolvidoPor ?? "Analisada")</span>}</td></tr>
+}
+@if(!Model.Any()){<tr><td colspan="5" class="text-center text-muted py-5">Nenhuma solicitação de vínculo até agora.</td></tr>}
+</tbody></table></div>

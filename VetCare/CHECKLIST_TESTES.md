@@ -1,19 +1,31 @@
-# Checklist manual antes da gravação
+# Checklist — VetCare com portal de tutores
 
-- [ ] Ajustar conexão MySQL em `appsettings.json`.
-- [ ] Executar `dotnet restore` e `dotnet run`.
-- [ ] Login de administrador e veterinário.
-- [ ] Acesso sem login redireciona para Login.
-- [ ] Cadastrar tutor com CPF e e-mail válidos.
-- [ ] Repetir CPF e confirmar mensagem de duplicidade.
-- [ ] Repetir e-mail e confirmar mensagem de duplicidade.
-- [ ] Cadastrar dois animais para o mesmo tutor.
-- [ ] Testar foto de tutor, animal e veterinário.
-- [ ] Alterar proporção da foto e conferir prévia do recorte.
-- [ ] Criar agendamento futuro.
-- [ ] Tentar mesmo veterinário no mesmo horário e conferir bloqueio.
-- [ ] Registrar atendimento a partir de um agendamento.
-- [ ] Anexar foto no atendimento.
-- [ ] Conferir tutor, animal, veterinário e diagnóstico no relatório.
-- [ ] Imprimir ou salvar o relatório em PDF.
-- [ ] Não enviar `appsettings.json` com senha real ao GitHub.
+## Preparação
+- [ ] Fazer backup do banco.
+- [ ] Configurar a string MySQL em `appsettings.json`.
+- [ ] Executar `Database/upgrade_v1_vinculos.sql` uma única vez no banco existente.
+- [ ] Recompilar a solução no Visual Studio.
+
+## Conta de cliente
+- [ ] Cadastro com CPF e e-mail novos.
+- [ ] Bloqueio de e-mail já usado por outra conta.
+- [ ] Associação a um cadastro de tutor já existente com o mesmo CPF e e-mail.
+- [ ] Login leva ao portal do cliente.
+- [ ] Cliente não acessa o painel operacional nem rotas de equipe.
+
+## Um animal, vários tutores
+- [ ] Animal existente recebe código de vínculo.
+- [ ] Cliente solicita vínculo pelo código.
+- [ ] Solicitação duplicada pendente é bloqueada.
+- [ ] Funcionário aprova o pedido.
+- [ ] Animal aparece no portal da segunda conta.
+- [ ] A ficha clínica permanece com o mesmo ID e sem duplicação.
+- [ ] Histórico e agendamentos ficam visíveis apenas a contas vinculadas.
+- [ ] Solicitação pode ser recusada.
+
+## Regressão da clínica
+- [ ] Criar/editar tutor.
+- [ ] Criar/editar animal e fotos.
+- [ ] Criar agendamento e alterar status.
+- [ ] Registrar atendimento e abrir relatório.
+- [ ] Verificar cadastro e unicidade do CRMV.

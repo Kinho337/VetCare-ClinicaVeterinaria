@@ -10,7 +10,7 @@ namespace VetCare.Controllers;
 public class TutoresController(VetCareDbContext db, PhotoService photos) : Controller
 {
     public async Task<IActionResult> Index(string? busca) =>
-        View(await db.Tutores.Include(x => x.Animais).Where(x => string.IsNullOrEmpty(busca) || x.Nome.Contains(busca) || x.CPF.Contains(busca) || x.Email.Contains(busca)).OrderBy(x => x.Nome).ToListAsync());
+        View(await db.Tutores.Include(x => x.Animais).Include(x => x.AnimalVinculos).Where(x => string.IsNullOrEmpty(busca) || x.Nome.Contains(busca) || x.CPF.Contains(busca) || x.Email.Contains(busca)).OrderBy(x => x.Nome).ToListAsync());
 
     public IActionResult Create() => View(new Tutor());
     [HttpPost, ValidateAntiForgeryToken]
@@ -31,6 +31,7 @@ public class TutoresController(VetCareDbContext db, PhotoService photos) : Contr
     public async Task<IActionResult> Details(int id)
     {
         var tutor = await db.Tutores.Include(x => x.Animais).ThenInclude(x => x.Agendamentos)
+            .Include(x => x.AnimalVinculos).ThenInclude(x => x.Animal)
             .FirstOrDefaultAsync(x => x.Id == id);
         return tutor is null ? NotFound() : View(tutor);
     }

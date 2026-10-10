@@ -18,5 +18,10 @@ public class Tutor
     [StringLength(500)]
     public string? FotoPerfil { get; set; }
     public DateTime CriadoEm { get; set; } = DateTime.UtcNow;
+
+    // Relação principal antiga, mantida para compatibilidade.
     public ICollection<Animal> Animais { get; set; } = new List<Animal>();
+    // Relação N:N: um tutor pode acompanhar vários animais e um animal pode ter vários tutores.
+    public ICollection<AnimalTutor> AnimalVinculos { get; set; } = new List<AnimalTutor>();
+    public ICollection<SolicitacaoVinculoAnimal> SolicitacoesVinculo { get; set; } = new List<SolicitacaoVinculoAnimal>();
 }
