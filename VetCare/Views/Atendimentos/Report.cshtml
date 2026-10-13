@@ -1,13 +1,139 @@
 @model Atendimento
-@{ ViewData["Title"] = "Relatório da consulta"; }
-<div class="d-flex justify-content-between align-items-center mb-3 no-print"><div><div class="eyebrow">DOCUMENTO CLÍNICO</div><h1 class="page-title">Relatório da consulta</h1></div><div class="d-flex gap-2"><button class="btn btn-primary" onclick="window.print()">Imprimir / salvar PDF</button><a class="btn btn-light" asp-action="Index">Voltar</a></div></div>
-<div class="report-sheet">
- <div class="report-header"><div class="report-logo">V</div><div><h1>VetCare</h1><p>Relatório de atendimento veterinário</p></div><div class="ms-auto text-end"><strong>Consulta #@Model.Id</strong><div>@Model.DataHora.ToString("dd/MM/yyyy HH:mm")</div></div></div>
- <section><h2>Paciente</h2><div class="report-grid">@if(!string.IsNullOrEmpty(Model.Animal?.FotoPerfil)){<img class="report-pet-photo" src="@Model.Animal.FotoPerfil" alt="Foto do animal"/>}<div><strong>Nome:</strong> @Model.Animal?.Nome<br/><strong>Espécie:</strong> @Model.Animal?.Especie<br/><strong>Raça:</strong> @(Model.Animal?.Raca ?? "Não informada")<br/><strong>Sexo:</strong> @(Model.Animal?.Sexo ?? "Não informado")<br/><strong>Identificação:</strong> @(Model.Animal?.Identificacao ?? "Não informada")</div></div></section>
- <section><h2>Tutor responsável</h2><strong>Nome:</strong> @Model.Animal?.Tutor?.Nome<br/><strong>CPF:</strong> @Model.Animal?.Tutor?.CPF<br/><strong>E-mail:</strong> @Model.Animal?.Tutor?.Email<br/><strong>Telefone:</strong> @Model.Animal?.Tutor?.Telefone<br/><strong>Endereço:</strong> @Model.Animal?.Tutor?.Endereco</section>
- <section><h2>Atendimento</h2><strong>Veterinário:</strong> @Model.Veterinario?.Nome<br/><strong>CRMV:</strong> @Model.Veterinario?.CRMV<br/><strong>Serviço:</strong> @(Model.Agendamento?.Servico?.Nome ?? "Consulta / atendimento")<div class="report-field"><h3>Queixa / motivo</h3><p>@Model.Queixa</p></div><div class="report-field"><h3>Diagnóstico</h3><p>@Model.Diagnostico</p></div><div class="report-field"><h3>Observações e plano de tratamento</h3><p>@(Model.Observacoes ?? "Não informado")</p></div><div class="report-field"><h3>Medicações recomendadas</h3><p>@(Model.MedicacoesRecomendadas ?? "Não informado")</p></div>
- @if(!string.IsNullOrEmpty(Model.FotoAtendimento)){<div class="report-field"><h3>Imagem anexada ao atendimento</h3><img class="report-attachment" src="@Model.FotoAtendimento" alt="Imagem do atendimento"/></div>}
- </section>
- <div class="report-signature"><div></div><span>@Model.Veterinario?.Nome<br/>CRMV: @Model.Veterinario?.CRMV</span></div>
- <div class="report-footer">Documento gerado pelo VetCare · Os registros devem ser conferidos pelo profissional responsável.</div>
+@{
+    ViewData["Title"] = $"Relatório clínico #{Model.Id}";
+    var animal = Model.Animal;
+    var tutor = animal?.Tutor;
+    var dataConsulta = Model.DataHora;
+    var idade = "Não informada";
+    if (animal?.DataNascimento is DateTime nascimento)
+    {
+        var anos = dataConsulta.Year - nascimento.Year;
+        if (nascimento.Date > dataConsulta.Date.AddYears(-anos)) anos--;
+        idade = anos <= 0 ? $"{Math.Max(0, (int)((dataConsulta.Date - nascimento.Date).TotalDays / 30))} mês(es)" : $"{anos} ano(s)";
+    }
+}
+
+<div class="report-toolbar no-print">
+    <div>
+        <span class="report-eyebrow">DOCUMENTO CLÍNICO</span>
+        <h1>Relatório de atendimento</h1>
+        <p>Confira os dados antes de imprimir ou salvar como PDF.</p>
+    </div>
+    <div class="report-toolbar-actions">
+        <a class="btn btn-light" asp-action="Index"><span aria-hidden="true">←</span> Voltar</a>
+        <button class="btn btn-primary" type="button" onclick="window.print()"><span aria-hidden="true">▤</span> Imprimir / salvar PDF</button>
+    </div>
 </div>
+
+<article class="clinical-report" aria-label="Relatório clínico veterinário">
+    <header class="clinical-report-header">
+        <div class="clinical-brand">
+            <img src="~/images/vetcare-logo.png" alt="VetCare" class="clinical-logo" />
+            <div>
+                <div class="clinical-brand-name">VetCare</div>
+                <div class="clinical-brand-tagline">Cuidando de quem te faz feliz</div>
+            </div>
+        </div>
+        <div class="clinical-document-meta">
+            <span class="clinical-document-label">RELATÓRIO CLÍNICO</span>
+            <strong>Atendimento #@Model.Id.ToString("D6")</strong>
+            <span>Emitido em @DateTime.Now.ToString("dd/MM/yyyy")</span>
+        </div>
+    </header>
+
+    <div class="clinical-report-body">
+        <section class="clinical-summary" aria-labelledby="clinical-summary-title">
+            <div class="clinical-pet-portrait">
+                @if (!string.IsNullOrWhiteSpace(animal?.FotoPerfil))
+                {
+                    <img src="@animal.FotoPerfil" alt="Foto de @animal.Nome" />
+                }
+                else
+                {
+                    <span aria-hidden="true">♡</span>
+                }
+            </div>
+            <div class="clinical-pet-main">
+                <span class="clinical-kicker" id="clinical-summary-title">PACIENTE</span>
+                <h2>@(animal?.Nome ?? "Paciente não informado")</h2>
+                <p>@(animal?.Especie ?? "Espécie não informada")<span class="clinical-dot">•</span>@(animal?.Raca ?? "Raça não informada")</p>
+                <div class="clinical-tags">
+                    <span><small>Sexo</small><strong>@(animal?.Sexo ?? "Não informado")</strong></span>
+                    <span><small>Idade</small><strong>@idade</strong></span>
+                    <span><small>Identificação</small><strong>@(animal?.Identificacao ?? "Não informada")</strong></span>
+                </div>
+            </div>
+            <div class="clinical-date-card">
+                <span>DATA DO ATENDIMENTO</span>
+                <strong>@dataConsulta.ToString("dd/MM/yyyy")</strong>
+                <small>@dataConsulta.ToString("HH:mm")</small>
+            </div>
+        </section>
+
+        <div class="clinical-two-columns">
+            <section class="clinical-info-block">
+                <div class="clinical-section-heading"><span class="clinical-section-icon">⌂</span><h3>Tutor responsável</h3></div>
+                <dl class="clinical-details">
+                    <div><dt>Nome</dt><dd>@(tutor?.Nome ?? "Não informado")</dd></div>
+                    <div><dt>CPF</dt><dd>@(tutor?.CPF ?? "Não informado")</dd></div>
+                    <div><dt>Telefone</dt><dd>@(tutor?.Telefone ?? "Não informado")</dd></div>
+                    <div><dt>E-mail</dt><dd>@(tutor?.Email ?? "Não informado")</dd></div>
+                    @if (!string.IsNullOrWhiteSpace(tutor?.Endereco))
+                    {
+                        <div><dt>Endereço</dt><dd>@tutor.Endereco</dd></div>
+                    }
+                </dl>
+            </section>
+            <section class="clinical-info-block">
+                <div class="clinical-section-heading"><span class="clinical-section-icon">✚</span><h3>Dados do atendimento</h3></div>
+                <dl class="clinical-details">
+                    <div><dt>Veterinário</dt><dd>@(Model.Veterinario?.Nome ?? "Não informado")</dd></div>
+                    <div><dt>CRMV</dt><dd>@(Model.Veterinario?.CRMV ?? "Não informado")</dd></div>
+                    <div><dt>Serviço</dt><dd>@(Model.Agendamento?.Servico?.Nome ?? "Consulta veterinária")</dd></div>
+                    <div><dt>Agendamento</dt><dd>@(Model.AgendamentoId.HasValue ? $"#{Model.AgendamentoId.Value:D6}" : "Atendimento sem agendamento")</dd></div>
+                </dl>
+            </section>
+        </div>
+
+        <section class="clinical-narrative-block">
+            <div class="clinical-section-heading"><span class="clinical-section-icon">▤</span><h3>Registro clínico</h3></div>
+            <div class="clinical-record-field">
+                <span class="clinical-field-label">Queixa / motivo da consulta</span>
+                <p>@(string.IsNullOrWhiteSpace(Model.Queixa) ? "Não informado." : Model.Queixa)</p>
+            </div>
+            <div class="clinical-record-field clinical-diagnosis">
+                <span class="clinical-field-label">Diagnóstico</span>
+                <p>@(string.IsNullOrWhiteSpace(Model.Diagnostico) ? "Não informado." : Model.Diagnostico)</p>
+            </div>
+            <div class="clinical-record-field">
+                <span class="clinical-field-label">Observações e plano de tratamento</span>
+                <p>@(string.IsNullOrWhiteSpace(Model.Observacoes) ? "Não informado." : Model.Observacoes)</p>
+            </div>
+            <div class="clinical-record-field">
+                <span class="clinical-field-label">Medicações recomendadas</span>
+                <p>@(string.IsNullOrWhiteSpace(Model.MedicacoesRecomendadas) ? "Não informado." : Model.MedicacoesRecomendadas)</p>
+            </div>
+        </section>
+
+        @if (!string.IsNullOrWhiteSpace(Model.FotoAtendimento))
+        {
+            <section class="clinical-attachment-block">
+                <div class="clinical-section-heading"><span class="clinical-section-icon">▧</span><h3>Anexo do atendimento</h3></div>
+                <img class="clinical-attachment" src="@Model.FotoAtendimento" alt="Imagem anexada ao atendimento" />
+            </section>
+        }
+
+        <section class="clinical-signature-area">
+            <div class="clinical-signature-line"></div>
+            <strong>@(Model.Veterinario?.Nome ?? "Médico(a)-veterinário(a)")</strong>
+            <span>CRMV: @(Model.Veterinario?.CRMV ?? "Não informado")</span>
+            <small>Assinatura e identificação do profissional responsável</small>
+        </section>
+    </div>
+
+    <footer class="clinical-report-footer">
+        <div><strong>VetCare</strong><span>Cuidando de quem te faz feliz</span></div>
+        <p>Documento clínico confidencial. As informações devem ser interpretadas pelo profissional veterinário responsável.</p>
+        <span class="clinical-report-id">VC-AT-@Model.Id.ToString("D6")</span>
+    </footer>
+</article>

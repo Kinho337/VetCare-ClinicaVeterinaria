@@ -1,12 +1,16 @@
 @model Animal
-<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<div asp-validation-summary="ModelOnly" class="alert alert-danger validation-panel mb-3"></div>
+<div class="animal-form-intro mb-4">
+    <span class="animal-form-icon" aria-hidden="true">🐾</span>
+    <div><strong>Uma ficha única para cada pet</strong><p class="mb-0">O mesmo tutor pode ter vários animais. Se este pet já existe no sistema, abra a ficha dele e solicite um vínculo em vez de cadastrá-lo novamente.</p></div>
+</div>
 <div class="row g-3">
- <div class="col-md-6"><label asp-for="Nome" class="form-label">Nome *</label><input asp-for="Nome" class="form-control"/><span asp-validation-for="Nome" class="text-danger"></span></div>
- <div class="col-md-3"><label asp-for="Especie" class="form-label">Espécie *</label><select asp-for="Especie" class="form-select"><option>Cão</option><option>Gato</option><option>Ave</option><option>Roedor</option><option>Réptil</option><option>Outro</option></select></div>
- <div class="col-md-3"><label asp-for="Raca" class="form-label">Raça</label><input asp-for="Raca" class="form-control"/></div>
- <div class="col-md-4"><label asp-for="Sexo" class="form-label">Sexo</label><select asp-for="Sexo" class="form-select"><option value="">Não informado</option><option>Macho</option><option>Fêmea</option></select></div>
- <div class="col-md-4"><label asp-for="DataNascimento" class="form-label">Nascimento</label><input asp-for="DataNascimento" type="date" class="form-control"/></div>
- <div class="col-md-4"><label asp-for="Identificacao" class="form-label">Identificação / microchip</label><input asp-for="Identificacao" class="form-control"/></div>
- <div class="col-12"><label asp-for="TutorId" class="form-label">Tutor responsável *</label><select asp-for="TutorId" asp-items="ViewBag.Tutores" class="form-select"><option value="">Selecione um tutor</option></select><span asp-validation-for="TutorId" class="text-danger"></span></div>
+ <div class="col-md-6"><label asp-for="Nome" class="form-label">Nome do pet *</label><input asp-for="Nome" class="form-control" placeholder="Ex.: Mel" autocomplete="off"/><span asp-validation-for="Nome" class="text-danger small"></span></div>
+ <div class="col-md-3"><label asp-for="Especie" class="form-label">Espécie *</label><select asp-for="Especie" class="form-select"><option value="Cão">Cão</option><option value="Gato">Gato</option><option value="Ave">Ave</option><option value="Roedor">Roedor</option><option value="Réptil">Réptil</option><option value="Outro">Outro</option></select><span asp-validation-for="Especie" class="text-danger small"></span></div>
+ <div class="col-md-3"><label asp-for="Raca" class="form-label">Raça</label><input asp-for="Raca" class="form-control" placeholder="Ex.: SRD"/><span asp-validation-for="Raca" class="text-danger small"></span></div>
+ <div class="col-md-4"><label asp-for="Sexo" class="form-label">Sexo</label><select asp-for="Sexo" class="form-select"><option value="">Não informado</option><option value="Macho">Macho</option><option value="Fêmea">Fêmea</option></select></div>
+ <div class="col-md-4"><label asp-for="DataNascimento" class="form-label">Data de nascimento</label><input asp-for="DataNascimento" type="date" class="form-control"/><span asp-validation-for="DataNascimento" class="text-danger small"></span></div>
+ <div class="col-md-4"><label asp-for="Identificacao" class="form-label">Microchip / identificação</label><input asp-for="Identificacao" class="form-control" placeholder="Opcional"/><span asp-validation-for="Identificacao" class="text-danger small"></span><div class="form-text">Quando informado, precisa ser único.</div></div>
+ <div class="col-12"><label asp-for="TutorId" class="form-label">Tutor responsável *</label><select asp-for="TutorId" asp-items="ViewBag.Tutores" class="form-select"><option value="0">Selecione o tutor responsável</option></select><span asp-validation-for="TutorId" class="text-danger small"></span><div class="form-text">É permitido cadastrar vários pets para o mesmo tutor.</div></div>
  <div class="col-12"><partial name="_PhotoField" model="Model.FotoPerfil"/></div>
 </div>

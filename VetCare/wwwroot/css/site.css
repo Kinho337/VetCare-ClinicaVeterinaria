@@ -9,3 +9,119 @@
 @media(max-width:575px){.page-container{padding-top:18px;padding-bottom:32px}.auth-page{margin:0 auto 10px;border-radius:20px}.auth-story{padding:25px}.auth-story h1{font-size:1.9rem;max-width:85%}.auth-story p{font-size:.9rem;max-width:85%}.story-illustration{font-size:4rem}.auth-form-wrap{padding:25px 18px}.portal-hero{padding:25px 22px;min-height:190px;border-radius:21px}.portal-hero p{font-size:.9rem}.portal-hero-paw{font-size:3.3rem;position:absolute;right:5px;bottom:10px;opacity:.25}.portal-stat{padding:13px;gap:10px}.portal-stat-icon{width:36px;height:36px}.portal-stat strong{font-size:1.35rem}.portal-stat span:not(.portal-stat-icon){font-size:.72rem}.content-card{padding:16px}.pet-card-photo{height:155px}}
 @media print{@page{size:A4;margin:14mm}body{background:#fff!important;font-size:11pt}.vc-navbar,.site-footer,.no-print{display:none!important}.page-container{padding:0!important;margin:0!important}.report-sheet{max-width:none;border:0;box-shadow:none;padding:0}.report-sheet section{break-inside:avoid}.report-header{break-inside:avoid}.report-attachment{max-width:250px}.report-footer{margin-top:20px}}
 \n.link-code-box{display:inline-flex;flex-direction:column;gap:3px;background:#f1f6ff;border:1px dashed #b8ccef;border-radius:12px;padding:11px 14px}.link-code-box span,.link-code-box small{font-size:.74rem;color:var(--muted)}.link-code-box strong{font-family:Nunito,sans-serif;letter-spacing:2px;font-size:1.15rem;color:var(--blue-deep)}\n
+
+/* VetCare UI refresh — friendly navy, teal and mint visual system */
+:root{--blue:#1e5aaa;--blue-deep:#102e63;--blue-pale:#edf4ff;--mint:#e0f8f3;--mint-deep:#138b86;--coral:#ffb49e;--ink:#192b4b;--muted:#71809a;--line:#e4ebf4;--surface:#fff;--bg:#f7f9fc;--shadow:0 14px 38px rgba(18,45,91,.07);--navy:#172b59;--teal:#17a99e}
+body{background:var(--bg);color:var(--ink)}
+.vc-navbar{position:relative;background:rgba(255,255,255,.96);border-bottom:1px solid #e7edf5;padding:.7rem 0;box-shadow:0 6px 22px rgba(23,43,89,.04)}
+.navbar-brand{gap:10px;letter-spacing:0}.brand-logo{width:45px;height:45px;object-fit:contain}.brand-wordmark{display:flex;flex-direction:column;font-family:Nunito,sans-serif;font-weight:900;font-size:1.42rem;line-height:1;color:var(--navy);letter-spacing:-.7px}.brand-wordmark>span,.auth-brand>span>span,.mobile-auth-brand>span>span{color:var(--teal)}.brand-wordmark small{font-family:"DM Sans",sans-serif;font-size:.61rem;font-weight:600;letter-spacing:0;color:#7b8ba5;margin-top:5px}.nav-link{border-radius:10px;transition:background .15s,color .15s}.nav-link:hover{background:#eff8f8;color:var(--teal)!important}.btn-primary{background:linear-gradient(135deg,#2373ca,#138f9a);border:0;box-shadow:0 8px 18px rgba(25,128,154,.17)}.btn-primary:hover{background:linear-gradient(135deg,#1b5da9,#087d85);border:0}.btn-outline-primary{color:var(--blue);border-color:#c8d9ee}.form-control:focus,.form-select:focus{border-color:#5ac4bb;box-shadow:0 0 0 .22rem rgba(23,169,158,.13)}
+.site-footer{background:var(--navy);color:#eaf2ff;padding:18px 0;margin-top:16px}.footer-inner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}.footer-brand{display:flex;align-items:center;gap:10px;font-size:.88rem}.footer-brand img{width:34px;height:34px;object-fit:contain}.footer-brand strong{font-family:Nunito,sans-serif;font-size:1.1rem}.footer-divider{height:22px;width:1px;background:#ffffff45;margin:0 5px}.footer-note{font-size:.78rem;color:#b8c8e4}
+.auth-layout{min-height:100vh;background:radial-gradient(circle at 12% 20%,#e4f9f4 0,transparent 25%),radial-gradient(circle at 90% 85%,#e7f0ff 0,transparent 25%),#f8fafc}.auth-main{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px clamp(14px,3vw,48px)}.auth-page{display:grid;grid-template-columns:minmax(320px,.92fr) minmax(430px,1.08fr);width:min(1160px,100%);max-width:none;min-height:700px;margin:0 auto;overflow:hidden;border:1px solid rgba(210,223,239,.85);border-radius:30px;background:#fff;box-shadow:0 28px 80px rgba(20,45,88,.12)}.auth-story{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;padding:42px clamp(28px,4vw,54px);color:#fff;background:linear-gradient(150deg,#172b59 0%,#1d447b 55%,#117f83 115%)}.auth-story:before,.auth-story:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.12);border-radius:50%;z-index:-1}.auth-story:before{width:420px;height:420px;right:-170px;top:-145px}.auth-story:after{width:300px;height:300px;left:-180px;bottom:-90px;background:rgba(75,206,188,.07)}.auth-brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-family:Nunito,sans-serif;font-size:1.75rem;font-weight:900;letter-spacing:-.8px;margin-bottom:54px}.auth-brand:hover{color:#fff}.auth-brand img{width:54px;height:54px;object-fit:contain}.auth-story .eyebrow{margin-bottom:13px}.auth-story h1{font-family:Nunito,sans-serif;font-size:clamp(2.2rem,3.3vw,3.15rem);font-weight:900;line-height:1.06;letter-spacing:-1.3px;margin:0 0 18px;max-width:500px}.auth-story p{max-width:430px;color:#d7e5f7;font-size:1rem;line-height:1.75;margin-bottom:22px}.story-pills{display:flex;flex-wrap:wrap;gap:8px;max-width:440px}.story-pills span{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.09);border-radius:99px;padding:8px 12px;color:#f2f8ff;font-size:.76rem;font-weight:700}.story-pet-scene{position:relative;width:100%;height:210px;margin-top:auto;min-height:190px}.scene-orbit{position:absolute;border-radius:50%;border:1px solid rgba(179,245,231,.3)}.orbit-one{width:210px;height:210px;right:35px;bottom:-65px;background:rgba(65,194,177,.12)}.orbit-two{width:145px;height:145px;right:67px;bottom:-31px;background:rgba(255,255,255,.06)}.scene-pet{position:absolute;display:grid;place-items:center;filter:drop-shadow(0 14px 14px rgba(3,18,44,.18));line-height:1}.scene-dog{font-size:7.3rem;right:94px;bottom:4px;transform:rotate(-6deg)}.scene-cat{font-size:5.3rem;right:16px;bottom:8px;transform:rotate(7deg)}.scene-paw{position:absolute;left:12px;bottom:22px;font-size:3.2rem;opacity:.18;transform:rotate(-20deg)}.scene-spark{position:absolute;color:#8ce6d9;font-size:1.5rem}.spark-one{right:45px;top:5px}.spark-two{right:230px;top:48px;font-size:2rem}.story-caption{display:flex;align-items:center;gap:8px;color:#d8e9f7;font-size:.78rem;margin-top:8px}.caption-dot{width:7px;height:7px;border-radius:50%;background:#7de0c9;box-shadow:0 0 0 5px #7de0c91f}.auth-form-wrap{display:flex;align-items:center;justify-content:center;padding:clamp(28px,4vw,60px);background:rgba(255,255,255,.94)}.auth-form-card{width:100%;max-width:455px}.auth-form-card h2{font-family:Nunito,sans-serif;font-size:2rem;font-weight:900;letter-spacing:-.8px;color:var(--navy);margin:8px 0 7px}.auth-intro{color:#7b879a;font-size:.93rem;margin-bottom:30px}.auth-form-card .form-label{font-size:.81rem;color:#334461;font-weight:800;margin-bottom:7px}.auth-form-card .form-control{min-height:49px;border-radius:13px;border-color:#dce6f1;background:#fbfcfe;font-size:.9rem}.auth-form-card .form-control::placeholder{color:#a0adbf}.auth-form-card .form-control:focus{background:#fff}.input-with-icon{position:relative}.input-with-icon>span{position:absolute;z-index:2;left:14px;top:50%;transform:translateY(-50%);color:#8b9ab1}.input-with-icon .form-control{padding-left:43px}.auth-submit{min-height:52px;border-radius:14px;font-size:.94rem;letter-spacing:.1px}.auth-submit span{float:right;font-size:1.2rem;line-height:1}.login-help{display:flex;align-items:center;gap:11px;border:1px solid #e4edf5;background:#f8fbff;border-radius:15px;padding:14px;margin-top:25px}.help-icon{display:grid;place-items:center;flex:0 0 38px;height:38px;border-radius:12px;background:#e0f8f3;color:#148e88;font-size:1.35rem}.login-help>span:nth-child(2){flex:1;min-width:0}.login-help strong,.login-help small{display:block}.login-help strong{font-size:.78rem;color:#263957}.login-help small{font-size:.72rem;color:#8190a5;margin-top:3px}.login-help a{font-size:.76rem;font-weight:900;white-space:nowrap;color:#128f8c}.auth-privacy{font-size:.72rem;color:#98a4b5;text-align:center;margin:20px 0 0}.mobile-auth-brand{display:none}.register-page{min-height:760px}.register-page .auth-brand{margin-bottom:34px}.register-form-card{max-width:510px}.register-form-card .auth-intro{margin-bottom:20px}.register-form-card .form-control{min-height:43px}.register-form-card .auth-privacy{margin-top:13px}.auth-validation:empty{display:none}
+.portal-hero{background:linear-gradient(120deg,#172b59 0%,#1d527e 58%,#149e99 120%);border-radius:26px;box-shadow:0 18px 38px rgba(23,43,89,.14)}.portal-stat-icon{background:#e0f8f3;color:#128c87}.pet-card{border-radius:23px}.pet-status{background:#dff8f1;color:#147c73}.friendly-empty{border-color:#bde7e0;background:linear-gradient(135deg,#fff,#f4fffc)}.timeline-date{background:#e8f7f6;color:#168b88}.history-icon{background:#e0f8f3;color:#138c87}.link-code-box{background:#f2fbfa;border-color:#a6ded7}.link-code-box strong{color:#147e7d}
+/* Form feedback and keyboard accessibility */
+.validation-summary-errors,.field-validation-error{font-size:.82rem;font-weight:600}.form-control:focus-visible,.form-select:focus-visible,.btn:focus-visible,a:focus-visible{outline:3px solid rgba(23,169,158,.22);outline-offset:2px}
+@media(max-width:991px){.auth-main{align-items:flex-start;padding:18px}.auth-page{grid-template-columns:1fr;max-width:650px;min-height:0}.auth-story{padding:30px 32px 0;min-height:380px}.auth-brand{margin-bottom:28px}.auth-story h1{font-size:2.35rem;max-width:540px}.auth-story p{max-width:500px}.story-pet-scene{height:125px;min-height:125px;position:absolute;right:10px;bottom:4px;width:250px;opacity:.7}.scene-dog{font-size:5rem;right:80px}.scene-cat{font-size:3.8rem}.orbit-one{width:140px;height:140px;right:40px;bottom:-55px}.orbit-two{width:95px;height:95px;right:62px;bottom:-30px}.story-caption{margin:0 0 20px}.auth-form-wrap{padding:34px}.register-page .auth-story{min-height:350px}.register-page .story-pet-scene{display:none}}
+@media(max-width:575px){.auth-main{padding:0;background:#fff}.auth-page{border:0;border-radius:0;box-shadow:none}.auth-story{padding:25px 22px 0;min-height:325px}.auth-brand{font-size:1.5rem;margin-bottom:24px}.auth-brand img{width:44px;height:44px}.auth-story h1{font-size:2rem;max-width:95%}.auth-story p{font-size:.86rem;max-width:95%;line-height:1.6;margin-bottom:14px}.story-pills{gap:6px}.story-pills span{font-size:.68rem;padding:6px 9px}.story-pet-scene{opacity:.23;right:-35px;bottom:0}.story-caption{font-size:.7rem;margin:0 0 14px}.auth-form-wrap{padding:28px 22px 34px}.auth-form-card h2{font-size:1.75rem}.auth-intro{font-size:.86rem;margin-bottom:24px}.login-help{padding:11px;gap:8px}.login-help a{font-size:.72rem}.mobile-auth-brand{display:flex;align-items:center;gap:8px;font-family:Nunito,sans-serif;font-size:1.35rem;font-weight:900;color:var(--navy);margin-bottom:24px}.mobile-auth-brand img{width:38px;height:38px;object-fit:contain}.register-page .auth-story{min-height:285px}.register-form-card .form-control{min-height:45px}.brand-wordmark small{display:none}.footer-note{display:none}}
+
+
+.animal-form-card{max-width:1020px}.animal-form-intro{display:flex;gap:14px;align-items:flex-start;padding:16px 18px;border:1px solid #d9eee9;border-radius:16px;background:linear-gradient(115deg,#f2fffb,#f7fbff)}.animal-form-icon{display:grid;place-items:center;flex:0 0 42px;height:42px;border-radius:14px;background:#dff8f1;font-size:1.35rem}.animal-form-intro strong{display:block;color:#193c5a;font-size:.9rem;margin:1px 0 3px}.animal-form-intro p{color:#6e8097;font-size:.81rem;line-height:1.55}.validation-panel:empty{display:none}.animal-form-card .form-text{font-size:.74rem;color:#8391a5}
+
+/* Relatório clínico profissional: visualização em tela e impressão A4 */
+.report-toolbar{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin:4px 0 22px}
+.report-toolbar h1{font-family:Nunito,sans-serif;color:#172b59;font-size:clamp(1.7rem,3vw,2.25rem);font-weight:900;letter-spacing:-.7px;margin:4px 0}
+.report-toolbar p{color:#77869b;font-size:.9rem;margin:0}
+.report-toolbar-actions{display:flex;gap:9px;flex-wrap:wrap}
+.report-eyebrow{font-size:.68rem;letter-spacing:1.6px;font-weight:900;color:#148f91}
+.clinical-report{max-width:900px;margin:0 auto;background:#fff;border:1px solid #dfe8f0;border-radius:22px;overflow:hidden;box-shadow:0 18px 48px rgba(23,43,89,.09);color:#26364e;font-size:13px;line-height:1.5}
+.clinical-report-header{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:27px 34px;background:linear-gradient(115deg,#f8fcff,#f0fbf8);border-bottom:1px solid #dcebe9;position:relative}
+.clinical-report-header:after{content:"";position:absolute;left:0;bottom:0;width:100%;height:4px;background:linear-gradient(90deg,#172b59 0%,#168f99 72%,#8be0cf 100%)}
+.clinical-brand{display:flex;align-items:center;gap:12px;min-width:0}
+.clinical-logo{width:66px;height:66px;object-fit:contain;flex-shrink:0}
+.clinical-brand-name{font-family:Nunito,sans-serif;font-weight:900;font-size:1.75rem;line-height:1;color:#172b59;letter-spacing:-.8px}
+.clinical-brand-tagline{font-size:.76rem;color:#75869f;margin-top:7px}
+.clinical-document-meta{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px;color:#64758e;font-size:.76rem}
+.clinical-document-label{display:inline-block;color:#117e83;background:#dff7f1;border-radius:6px;padding:4px 8px;font-size:.63rem;letter-spacing:1px;font-weight:900;margin-bottom:2px}
+.clinical-document-meta strong{font-family:Nunito,sans-serif;color:#172b59;font-size:1rem}
+.clinical-report-body{padding:28px 34px 30px}
+.clinical-summary{display:grid;grid-template-columns:94px minmax(0,1fr) 142px;align-items:center;gap:18px;padding:20px;border:1px solid #dcebe9;border-radius:16px;background:#fbfefd;margin-bottom:22px;break-inside:avoid}
+.clinical-pet-portrait{width:88px;height:88px;border-radius:18px;overflow:hidden;display:grid;place-items:center;background:linear-gradient(145deg,#e3f8f3,#e8f0ff);color:#188e91;font-size:3.4rem;font-weight:400}
+.clinical-pet-portrait img{width:100%;height:100%;object-fit:cover}
+.clinical-kicker{font-size:.64rem;letter-spacing:1.4px;color:#168b8d;font-weight:900}
+.clinical-pet-main h2{font-family:Nunito,sans-serif;color:#172b59;font-size:1.65rem;font-weight:900;line-height:1.15;margin:4px 0}
+.clinical-pet-main>p{font-size:.83rem;color:#697b93;margin:0 0 10px}
+.clinical-dot{color:#13a39b;margin:0 7px}
+.clinical-tags{display:flex;gap:7px;flex-wrap:wrap}
+.clinical-tags span{display:flex;flex-direction:column;gap:2px;min-width:75px;border:1px solid #e2ecef;background:#fff;border-radius:8px;padding:5px 8px}
+.clinical-tags small{font-size:.61rem;color:#8a98aa}
+.clinical-tags strong{font-size:.73rem;color:#334660;font-weight:800;overflow-wrap:anywhere}
+.clinical-date-card{border-left:1px solid #dce8ed;padding-left:17px;display:flex;flex-direction:column;gap:4px}
+.clinical-date-card span{font-size:.58rem;line-height:1.4;letter-spacing:.6px;font-weight:900;color:#7b8aa0}
+.clinical-date-card strong{font-family:Nunito,sans-serif;font-size:1.04rem;color:#172b59;white-space:nowrap}
+.clinical-date-card small{font-size:.8rem;color:#168b8d;font-weight:800}
+.clinical-two-columns{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:23px}
+.clinical-info-block{border:1px solid #e3eaf1;border-radius:14px;padding:17px 18px;min-width:0;break-inside:avoid}
+.clinical-section-heading{display:flex;align-items:center;gap:9px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #eaf0f5}
+.clinical-section-heading h3{font-family:Nunito,sans-serif;color:#172b59;font-size:1rem;font-weight:900;margin:0}
+.clinical-section-icon{display:grid;place-items:center;flex:0 0 29px;height:29px;border-radius:9px;background:#e0f7f2;color:#148b8c;font-weight:900;font-size:1rem}
+.clinical-details{margin:0;display:flex;flex-direction:column;gap:8px}
+.clinical-details>div{display:grid;grid-template-columns:85px minmax(0,1fr);gap:8px}
+.clinical-details dt{font-size:.72rem;font-weight:600;color:#8492a5;margin:0}
+.clinical-details dd{font-size:.76rem;font-weight:750;color:#33445e;margin:0;overflow-wrap:anywhere}
+.clinical-narrative-block,.clinical-attachment-block{margin-top:20px}
+.clinical-record-field{padding:13px 15px;border:1px solid #e4ebf2;border-radius:11px;margin-top:9px;break-inside:avoid}
+.clinical-field-label{display:block;font-size:.69rem;letter-spacing:.35px;text-transform:uppercase;color:#71829a;font-weight:900;margin-bottom:6px}
+.clinical-record-field p{white-space:pre-wrap;overflow-wrap:anywhere;color:#2c3d55;font-size:.82rem;line-height:1.65;margin:0;min-height:1.3em}
+.clinical-diagnosis{border-color:#bfe5df;background:#f4fcfa;border-left:4px solid #169b96}
+.clinical-diagnosis .clinical-field-label{color:#127f80}
+.clinical-diagnosis p{font-weight:650;color:#1e3d53}
+.clinical-attachment{display:block;max-width:100%;max-height:320px;object-fit:contain;border:1px solid #e2eaf2;border-radius:12px;padding:5px;background:#fff}
+.clinical-signature-area{width:270px;max-width:100%;margin:46px 0 0 auto;text-align:center;display:flex;flex-direction:column;align-items:center;break-inside:avoid}
+.clinical-signature-line{width:100%;border-top:1px solid #8a98a9;margin-bottom:9px}
+.clinical-signature-area strong{font-family:Nunito,sans-serif;color:#172b59;font-size:.88rem}
+.clinical-signature-area span{font-size:.75rem;color:#455771;margin-top:2px}
+.clinical-signature-area small{font-size:.64rem;color:#8b98a9;margin-top:6px}
+.clinical-report-footer{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:15px 34px;background:#172b59;color:#eaf3ff}
+.clinical-report-footer>div{display:flex;flex-direction:column;gap:2px;white-space:nowrap}
+.clinical-report-footer>div strong{font-family:Nunito,sans-serif;font-size:.85rem}
+.clinical-report-footer>div span,.clinical-report-footer p,.clinical-report-id{font-size:.62rem;color:#c2d1e6;margin:0}
+.clinical-report-footer p{text-align:center;line-height:1.45}
+.clinical-report-id{white-space:nowrap;font-weight:800;letter-spacing:.5px}
+@media(max-width:700px){.clinical-report-header{padding:22px;align-items:flex-start}.clinical-logo{width:50px;height:50px}.clinical-brand-name{font-size:1.45rem}.clinical-brand-tagline{font-size:.65rem}.clinical-report-body{padding:18px}.clinical-summary{grid-template-columns:72px minmax(0,1fr);gap:13px;padding:14px}.clinical-pet-portrait{width:70px;height:70px;border-radius:14px}.clinical-date-card{grid-column:1/-1;border-left:0;border-top:1px solid #dce8ed;padding:10px 0 0;display:grid;grid-template-columns:1fr auto auto;align-items:center}.clinical-two-columns{grid-template-columns:1fr}.clinical-report-footer{grid-template-columns:1fr auto;padding:14px 18px}.clinical-report-footer p{grid-column:1/-1;grid-row:2;text-align:left}.report-toolbar-actions{width:100%}}
+@page{size:A4 portrait;margin:12mm}
+@media print{
+ html,body{width:100%!important;background:#fff!important;color:#26364e!important;font-family:Arial,Helvetica,sans-serif!important;font-size:9pt!important;line-height:1.4!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+ body{margin:0!important}
+ .vc-navbar,.site-footer,.no-print,.report-toolbar,.alert{display:none!important}
+ main.page-container,.page-container{display:block!important;width:100%!important;max-width:none!important;min-height:0!important;margin:0!important;padding:0!important}
+ .clinical-report{width:100%!important;max-width:none!important;margin:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important;font-size:9pt!important}
+ .clinical-report-header{padding:0 0 12px!important;background:#fff!important;border-bottom:2px solid #168f99!important}
+ .clinical-report-header:after{display:none!important}
+ .clinical-logo{width:54px!important;height:54px!important}
+ .clinical-brand-name{font-size:20pt!important}
+ .clinical-brand-tagline{font-size:7.5pt!important}
+ .clinical-document-meta{font-size:7.5pt!important}
+ .clinical-document-label{background:#e4f7f2!important;color:#117e83!important}
+ .clinical-report-body{padding:15px 0 12px!important}
+ .clinical-summary{grid-template-columns:76px minmax(0,1fr) 120px!important;gap:12px!important;padding:12px!important;margin-bottom:14px!important;background:#f8fcfb!important;break-inside:avoid!important}
+ .clinical-pet-portrait{width:70px!important;height:70px!important}
+ .clinical-pet-main h2{font-size:15pt!important}
+ .clinical-tags span{padding:4px 6px!important}
+ .clinical-two-columns{grid-template-columns:1fr 1fr!important;gap:10px!important;margin-bottom:14px!important}
+ .clinical-info-block{padding:11px 12px!important;break-inside:avoid!important}
+ .clinical-section-heading{margin-bottom:8px!important;padding-bottom:7px!important}
+ .clinical-section-heading h3{font-size:10pt!important}
+ .clinical-details{gap:5px!important}
+ .clinical-details>div{grid-template-columns:70px minmax(0,1fr)!important;gap:5px!important}
+ .clinical-details dt,.clinical-details dd{font-size:7.5pt!important}
+ .clinical-record-field{padding:9px 11px!important;margin-top:7px!important;break-inside:avoid!important}
+ .clinical-field-label{font-size:7pt!important;margin-bottom:4px!important}
+ .clinical-record-field p{font-size:8.5pt!important;line-height:1.45!important}
+ .clinical-attachment{max-height:210px!important}
+ .clinical-signature-area{margin-top:34px!important;break-inside:avoid!important}
+ .clinical-report-footer{grid-template-columns:auto minmax(0,1fr) auto!important;padding:10px 12px!important;background:#172b59!important;break-inside:avoid!important}
+ .clinical-report-footer p{font-size:6.5pt!important}
+ .clinical-report-footer>div strong{font-size:8pt!important}
+ .clinical-report-footer>div span,.clinical-report-id{font-size:6pt!important}
+ section,article,header,footer{box-shadow:none!important}
+ img{max-width:100%!important}
+}
